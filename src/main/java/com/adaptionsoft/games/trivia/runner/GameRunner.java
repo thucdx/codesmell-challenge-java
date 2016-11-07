@@ -18,9 +18,11 @@ public class GameRunner {
 	 * @return winner name
 	 */
 	public static String getWinner(String[] players, int[] rolls, boolean[] answers) throws GameRunnerException {
+		boolean notYetWinner;
+
 		// Validate
 		int totalPlayer = players.length;
-		if (totalPlayer <= 1 || totalPlayer >= 6) {
+		if (totalPlayer <= 1 || totalPlayer > 6) {
 			throw new GameRunnerException("Invalid game! Number of players must be in range [2,6]");
 		}
 
@@ -41,11 +43,11 @@ public class GameRunner {
 			aGame.roll(rolls[id]);
 
 			if (!answers[id]) {
-				notAWinner = aGame.wrongAnswer();
+				notYetWinner = aGame.wrongAnswer();
 			} else {
-				notAWinner = aGame.wasCorrectlyAnswered();
+				notYetWinner = aGame.wasCorrectlyAnswered();
 			}
-		} while (++id < totalRoll);
+		} while (++id < totalRoll && notYetWinner);
 
 		return aGame.getWinnerName();
 	}
